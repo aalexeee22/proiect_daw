@@ -1,0 +1,16 @@
+{
+  "name": "alexandrapana/library",
+  "description": "Library application",
+  "authors": [
+    {
+      "name": "Pana Alexandra",
+      "email": "aalexeee@yahoo.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Framework\\": "Framework/",
+      "App\\": "App/"
+    }
+  }
+}

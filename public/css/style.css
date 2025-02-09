@@ -68,6 +68,19 @@ header .buttons a:hover {
 .card h4 {
     margin: 5px 0;
     color: #555;
+    word-wrap: break-word;  /* Allows long words to break and wrap */
+    overflow-wrap: break-word; /* Ensures text breaks at proper points */
+    white-space: normal;  /* Allows text wrapping */
+    max-width: 100%;  /* Prevents text from going beyond the card */
+}
+
+.add-button{
+    margin-top:20px;
+}
+.delete-button{
+    background:firebrick;
+    color:white;
+    border-radius: 4px;
 }
 
 .read-button {

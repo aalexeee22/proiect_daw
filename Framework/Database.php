@@ -1,6 +1,10 @@
 <?php
 class Database {
-    public $conn;
+    private $conn;
+
+    public function getConnection() {
+        return $this->conn;
+    }
 
     /**
      * Constructor for the Database

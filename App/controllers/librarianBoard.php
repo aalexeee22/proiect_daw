@@ -7,15 +7,17 @@ $books = $db->query("SELECT * FROM books")->fetchAll();
 
 // Handle book deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_book_id'])) {
-    $book_id = intval($_POST['delete_book_id']);
-
+    //$book_id = intval($_POST['delete_book_id']);
+    $book_id = $_POST['delete_book_id'];
+    echo $book_id;
     // Delete the book with the given ID using positional placeholders
-    $db->query("DELETE FROM books WHERE book_id = ?", [$book_id]);
+    $db->query("DELETE FROM books WHERE book_id =".$book_id);
+
 
     // Redirect to avoid form resubmission
-    header("Location: /books");
+    header("Location: /librarian-board");
     exit;
 }
 
-loadView("books", ['books' => $books]);
+loadView("librarianBoard", ['books' => $books]);
 ?>

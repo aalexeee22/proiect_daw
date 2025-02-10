@@ -5,6 +5,13 @@ $db=new Database($config);
 $conn = $db->getConnection();
 $users=$db->query("SELECT * FROM users")->fetchAll();
 
+// Check if user is logged in and is an admin
+if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
+    // Redirect to a restricted page or login page
+    header("Location: /restricted-access");
+    exit;
+}
+
 //handle delete user from admin board
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user_id'])) {
     $user_id = $_POST['delete_user_id'];

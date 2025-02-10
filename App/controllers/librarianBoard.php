@@ -3,6 +3,13 @@ session_start();
 $config = require basePath('config/db.php');
 $db = new Database($config);
 $conn = $db->getConnection();
+
+if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] !== 'librarian'&& $_SESSION['user_type'] !== 'admin')) {
+    // Redirect to a restricted page or login page
+    header("Location: /restricted-access");
+    exit;
+}
+
 // Fetch all books
 $books = $db->query("SELECT * FROM books")->fetchAll();
 

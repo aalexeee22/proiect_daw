@@ -12,8 +12,8 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 //require_once basePath('controllers/mail_config.php');
-$usernameG='euaalexeee@gmail.com';
-$passwordG='paog ttvc hxys cwns';
+$usernameG='';
+$passwordG='';
 
 $db = new Database(require basePath('config/db.php'));
 $conn = $db->getConnection();

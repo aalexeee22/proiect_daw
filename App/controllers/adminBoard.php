@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'], $_POST[
     $email = $_POST['email'];
     $password = $_POST['password'];
     $user_type = $_POST['user_type'];
-
+    $active=1;
     // Validate email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Error: Invalid email format!";
@@ -115,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'], $_POST[
         exit;
     }
 
-    $db->query("INSERT INTO users (first_name, last_name, email, password, user_type) VALUES ($first_name, $last_name, $email, $password, $user_type)");
+    $db->query("INSERT INTO users (first_name, last_name, email, password, user_type,active) VALUES ($first_name, $last_name, $email, $password, $user_type,$active)");
 
     $_SESSION['message'] = "User created successfully.";
     header("Location: /admin-board");

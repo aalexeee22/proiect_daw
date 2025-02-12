@@ -8,5 +8,5 @@ $router->get('/signUp', 'controllers/signUp.php');
 $router->get('/librarian-board', 'controllers/librarianBoard.php');
 $router->get('/restricted-access', 'controllers/error/restricted.php');
 $router->get('/404', 'controllers/error/404.php');
-
+$router->get('/activate', 'controllers/activate.php');
 ?>

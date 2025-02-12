@@ -12,6 +12,11 @@ if (session_status() === PHP_SESSION_NONE) {
 
     <div class="buttons">
         <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if ($_SESSION['user_type'] === 'admin'): ?>
+                <a href="/admin-board">Manage Users</a>
+                <a href="/librarian-board">Manage Books</a>
+                <a href="/books">Read Books</a>
+            <?php endif; ?>
             <a href="/signOut">Sign Out</a>
         <?php else: ?>
             <!-- Show Sign In and Sign Up when NOT logged in -->

@@ -1,6 +1,9 @@
 <?php
 session_start(); // Start the session
-
+if (isset($_SESSION['user_id'])) {
+    header("Location: /restricted-access"); // Redirect to home or change to /dashboard if needed
+    exit;
+}
 // Load database configuration and initialize connection
 $config = require basePath('config/db.php');
 $db = new Database($config);
@@ -10,15 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Get and trim input
     $email = $_POST['email'];
     $password = $_POST['password'];
+    // Validate email format
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['error'] = "Invalid email format!";
+        header("Location: /signIn");
+        exit;
+    }
 
     // Debug: Print received input
-    echo "Email: " . htmlspecialchars($email) . "<br>";
-    echo "Password: " . htmlspecialchars($password) . "<br>";
+    //echo "Email: " . htmlspecialchars($email) . "<br>";
+    //echo "Password: " . htmlspecialchars($password) . "<br>";
 
     // 🔹 Check if email or password is empty
     if (empty($email) || empty($password)) {
         $_SESSION['error'] = "Email and password are required!";
-        echo "🔴 Redirecting due to empty fields...";
+        //echo "🔴 Redirecting due to empty fields...";
         exit; // Stop execution here before redirecting
     }
 
@@ -33,10 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $user = $sth->fetch(PDO::FETCH_ASSOC);
 
         // 🔹 Debug: Print fetched user data
+        /*
         echo "<pre>";
         var_dump($user);
         echo "</pre>";
-
+*/
         if (!$user) {
             $_SESSION['error'] = "Invalid email or password!";
             echo "🔴 No user found with this email!";
@@ -44,8 +54,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // 🔹 Debug: Before password verification
+        /*
         echo "Stored password: " . $user['password'] . "<br>";
         echo "Entered password: " . $password . "<br>";
+*/
+
+        if ($user['active'] == 0) {
+            $_SESSION['error'] = "Your account is not activated. Check your email.";
+            header("Location: /signIn");
+            exit;
+        }
 
         if ($password==$user['password']) {
             // Regenerate session ID for security
@@ -56,37 +74,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['email'] = $user['email'];
             $_SESSION['user_type'] = $user['user_type'];
 
-            echo "✅ Password verification successful! Redirecting...";
+            //echo "✅ Password verification successful! Redirecting...";
 
             // Redirect based on user type
             switch ($user['user_type']) {
                 case 'admin':
-                    echo "Redirecting to /admin-board";
+                    //echo "Redirecting to /admin-board";
                     header("Location: /admin-board");
                     exit;
                 case 'librarian':
-                    echo "Redirecting to /librarian-board";
+                    //echo "Redirecting to /librarian-board";
                     header("Location: /librarian-board");
                     exit;
                 case 'reader':
-                    echo "Redirecting to /books";
+                    //echo "Redirecting to /books";
                     header("Location: /books");
                     exit;
                 default:
                     $_SESSION['error'] = "Invalid user type!";
-                    echo "🔴 Invalid user type!";
+                    //echo "🔴 Invalid user type!";
+                    header("Location: /restricted-access");
                     exit;
             }
         } else {
             $_SESSION['error'] = "Invalid email or password!";
-            echo "🔴 Password verification failed!";
+            //echo "🔴 Password verification failed!";
+            header("Location: /signIn");
             exit;
         }
     } catch (Exception $e) {
         // Log error and prevent exposing sensitive information
         error_log("Sign-in error: " . $e->getMessage());
         $_SESSION['error'] = "Something went wrong. Please try again!";
-        echo "🔴 Error occurred: " . $e->getMessage();
+        header("Location: /signIn");
+        //echo "🔴 Error occurred: " . $e->getMessage();
         exit;
     }
 }

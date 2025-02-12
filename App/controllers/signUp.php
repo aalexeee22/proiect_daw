@@ -24,25 +24,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = trim($_POST['password']);
 
+    // Check if the email already exists
+    $emailQuery = "SELECT COUNT(*) FROM users WHERE email = :email";
+    $emailStmt = $conn->prepare($emailQuery);
+    $emailStmt->execute([':email' => $email]);
+    $emailExists = $emailStmt->fetchColumn();
+
+    if ($emailExists > 0) {
+        $_SESSION['error'] = "This email is already in use. Please use a different email address.";
+        header("Location: /signUp"); // Redirect back to sign-up page
+        exit;
+    }
 
     // Generate activation code
     $activation_code = bin2hex(random_bytes(16));
     $activation_expiry = date("Y-m-d H:i:s", strtotime("+1 day")); // 24-hour expiry
 
     try {
-        // Insert into database
-        $query = "INSERT INTO users (first_name, last_name, email, password, user_type, active, activation_code, activation_expiry) 
-                  VALUES (:first_name, :last_name, :email, :password, 'reader', 0, :activation_code, :activation_expiry)";
-        $stmt = $conn->prepare($query);
-        $stmt->execute([
-            ':first_name' => $first_name,
-            ':last_name' => $last_name,
-            ':email' => $email,
-            ':password' => $password,
-            ':activation_code' => $activation_code,
-            ':activation_expiry' => $activation_expiry,
-        ]);
-
         // Send activation email
         $domain='http://localhost';
         $activation_link = "$domain/activate";
@@ -69,10 +67,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->Subject = 'Activate Your Account';
         $mail->Body = $message;
 
-        $mail->send();
+        if (!$mail->send()) {
+            throw new Exception("Email failed to send.");
+        }
 
         $_SESSION['success'] = "Registration successful! Check your email for activation.";
-        header("Location: /signIn");
+        // Insert into database
+        $query = "INSERT INTO users (first_name, last_name, email, password, user_type, active, activation_code, activation_expiry) 
+                  VALUES (:first_name, :last_name, :email, :password, 'reader', 0, :activation_code, :activation_expiry)";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            ':first_name' => $first_name,
+            ':last_name' => $last_name,
+            ':email' => $email,
+            ':password' => $password,
+            ':activation_code' => $activation_code,
+            ':activation_expiry' => $activation_expiry,
+        ]);
+        header("Location: /signUp");
         exit;
     } catch (Exception $e) {
         error_log("Signup error: " . $e->getMessage());

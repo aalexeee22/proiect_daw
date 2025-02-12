@@ -3,17 +3,18 @@ loadPartial('head');
 loadPartial('body');
 loadPartial('navbar');
 ?>
-<?php if (isset($_SESSION['error'])): ?>
-    <div id="message-box"><?php echo $_SESSION['error']; ?></div>
-    <?php unset($_SESSION['error']); ?> <!-- Clear the message after showing it -->
-<?php endif; ?>
-<?php if (isset($_SESSION['success'])): ?>
-    <div id="message-box"><?php echo $_SESSION['success']; ?></div>
-    <?php unset($_SESSION['success']); ?> <!-- Clear the message after showing it -->
-<?php endif; ?>
+
 <div class="sign-up-big-container">
 <div class="sign-up-container">
     <h1>Sign Up</h1>
+    <?php if (isset($_SESSION['error'])): ?>
+        <div id="message-box"><?php echo $_SESSION['error']; ?></div>
+        <?php unset($_SESSION['error']); ?> <!-- Clear the message after showing it -->
+    <?php endif; ?>
+    <?php if (isset($_SESSION['success'])): ?>
+        <div id="message-box"><?php echo $_SESSION['success']; ?></div>
+        <?php unset($_SESSION['success']); ?> <!-- Clear the message after showing it -->
+    <?php endif; ?>
     <form action="/signUp" method="post" onsubmit="return validateSignUp()">
         <input type="text" name="first_name" id="first_name" placeholder="First name" required>
         <input type="text" name="last_name" id="last_name" placeholder="Last name" required>
@@ -51,6 +52,20 @@ loadPartial('navbar');
 
             return true;
         }
+        document.getElementById("email").addEventListener("blur", function() {
+            var email = this.value.trim();
+            if (email === "") return;
+
+            fetch("/check-email?email=" + encodeURIComponent(email))
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        alert("This email is already in use. Please use a different one.");
+                        this.value = "";
+                    }
+                })
+                .catch(error => console.error("Error checking email:", error));
+        });
     </script>
 <?php
 loadPartial('footer');

@@ -31,15 +31,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if (!$user) {
             $_SESSION['error'] = "Invalid activation code!";
+            header("Location: /activate");
             //echo "No user found with this activation code!";
             exit;
         }
 
-        // 🔹 Debug: Before password verification
-        /*
-        echo "Stored password: " . $user['password'] . "<br>";
-        echo "Entered password: " . $password . "<br>";
-*/
+        // Check if the activation code has expired
+        $activation_expiry = strtotime($user['activation_expiry']);
+        $current_time = time(); // Get current timestamp
+
+        if ($activation_expiry < $current_time) {
+            // Activation code has expired, delete the user
+            $deleteQuery = "DELETE FROM users WHERE user_id = :user_id";
+            $deleteStmt = $conn->prepare($deleteQuery);
+            $deleteStmt->execute([':user_id' => $user['user_id']]);
+
+            $_SESSION['error'] = "Your activation code has expired. You need to sign up again.";
+            header("Location: /signUp");
+            exit;
+        }
 
         if ($user['active'] == 1) {
             $_SESSION['error'] = "Your account is already activated. Go sign in!";
@@ -47,9 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         }
         if ($activation_code==$user['activation_code']) {
-
             $user_id = $user['user_id'];
-
             // Redirect based on user type
             $updateQuery = "UPDATE users SET active = 1, activation_code = NULL WHERE user_id = :user_id";
             $updateStmt = $conn->prepare($updateQuery);
@@ -60,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit;
         } else {
             $_SESSION['error'] = "Invalid or expired activation link.";
-            header("Location: /signIn");
             exit;
         }
     } catch (Exception $e) {

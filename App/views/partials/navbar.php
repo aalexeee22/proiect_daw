@@ -1,5 +1,5 @@
 <?php
-// Check if a session is already started before calling session_start()
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,6 +15,12 @@ if (session_status() === PHP_SESSION_NONE) {
             <?php if ($_SESSION['user_type'] === 'admin'): ?>
                 <a href="/admin-board">Manage Users</a>
                 <a href="/librarian-board">Manage Books</a>
+                <a href="/books">Read Books</a>
+            <?php endif; ?>
+            <?php if ($_SESSION['user_type'] === 'librarian'): ?>
+                <a href="/librarian-board">Manage Books</a>
+            <?php endif; ?>
+            <?php if ($_SESSION['user_type'] === 'reader'): ?>
                 <a href="/books">Read Books</a>
             <?php endif; ?>
             <a href="/signOut">Sign Out</a>

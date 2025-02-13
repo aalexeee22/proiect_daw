@@ -1,9 +1,9 @@
 <?php
 session_start();
 
-// Check if user is logged in
+// verific daca utilizatorul e conectat
 if (!isset($_SESSION['user_type'])) {
-    header("Location: /signIn"); // Redirect to sign-in if not logged in
+    header("Location: /signIn");
     exit;
 }
 loadView('restricted');

@@ -7,15 +7,15 @@ loadPartial('navbar');
 ?>
     <div class="welcome-message">
         <h1>These are the available books.</h1>
-        <!-- Display error or success messages when adding a new book-->
+        <!-- mesaj dupa adaugarea unei carti-->
         <?php if (isset($_SESSION['message'])): ?>
             <div id="message-box"><?php echo $_SESSION['message']; ?></div>
-            <?php unset($_SESSION['message']); ?> <!-- Clear the message after showing it -->
+            <?php unset($_SESSION['message']); ?>
         <?php endif; ?>
-        <!-- Button to Show Add Book Form -->
+
         <button onclick="toggleCreateBookForm()" class="add-button">Add New Book</button>
 
-        <!-- Create Book Form (Hidden by Default) -->
+        <!-- formular de adaugare carti (default hidden) -->
         <form method="POST" id="create-book-form" style="display: none;">
             <label>Title:</label>
             <input type="text" name="title" placeholder="Enter title" required>

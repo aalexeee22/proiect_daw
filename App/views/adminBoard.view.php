@@ -8,15 +8,15 @@ loadPartial('navbar');
 <div class="welcome-message">
     <h1>These are all the users.</h1>
 
-    <!-- Display error or success messages when adding a new user-->
+    <!-- mesaj dupa adaugarea unui user-->
     <?php if (isset($_SESSION['message'])): ?>
         <div id="message-box"><?php echo $_SESSION['message']; ?></div>
-        <?php unset($_SESSION['message']); ?> <!-- Clear the message after showing it -->
+        <?php unset($_SESSION['message']); ?>
     <?php endif; ?>
-    <!-- Button to Show Add User Form -->
+
     <button onclick="toggleCreateUserForm()" class="add-button">Add New User</button>
 
-    <!-- Create User Form (Hidden by Default) -->
+    <!-- formular de creare useri (default hidden) -->
     <form method="POST" id="create-user-form" style="display: none;">
         <label>First Name:</label>
         <input type="text" name="first_name" placeholder="Enter first name" required>
@@ -110,9 +110,7 @@ loadPartial('navbar');
 
     function validateEmail(userId) {
         var email = document.getElementById("email_" + userId).value;
-        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for email validation
-
-        // Validate email format
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (email !== "" && !emailPattern.test(email)) {
             alert("Invalid email format! Please enter a valid email with '@'.");
             return false;

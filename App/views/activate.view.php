@@ -8,15 +8,15 @@ if (session_status() === PHP_SESSION_NONE) {
 loadPartial('head');
 loadPartial('body');
 loadPartial('navbar');
-// Check if an error message exists and store it in a variable
+
 $error = isset($_SESSION['error']) ? $_SESSION['error'] : '';
-unset($_SESSION['error']); // Clear the error message after displaying
+unset($_SESSION['error']);
 ?>
 
 <div class="sign-in-big-container">
     <div class="sign-in-container">
         <h1>Activation</h1>
-        <!-- Display Error Message -->
+        <!-- afisez eroarea daca exista -->
         <?php if (!empty($error)): ?>
             <div id="message-box" class="error-message"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>

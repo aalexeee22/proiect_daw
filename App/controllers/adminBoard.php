@@ -5,32 +5,28 @@ $db=new Database($config);
 $conn = $db->getConnection();
 $users=$db->query("SELECT * FROM users")->fetchAll();
 
-// Check if user is logged in and is an admin
+//verific daca user-ul  are drepptul de a fi pe aceasta pagina
 if (!isset($_SESSION['user_type']) || $_SESSION['user_type'] !== 'admin') {
-    // Redirect to a restricted page or login page
     header("Location: /restricted-access");
     exit;
 }
 
-//handle delete user from admin board
+//stergerea unui user
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user_id'])) {
     $user_id = $_POST['delete_user_id'];
     echo $user_id;
-    // Delete the book with the given ID using positional placeholders
+
     $db->query("DELETE FROM users WHERE user_id =".$user_id);
 
-
-    // Redirect to avoid form resubmission
     header("Location: /admin-board");
     exit;
 }
 
 
-// Handle UPDATE request
+// actualizarea unei carti
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user_id'])) {
     $user_id = $_POST['update_user_id'];
 
-    // Fetch existing user data
     $userExists = $db->query("SELECT * FROM users WHERE user_id =".$user_id)->fetch();
 
     if ($userExists) {
@@ -74,8 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user_id'])) {
             $db->query("UPDATE users SET user_type = '" . $user_type . "' WHERE user_id = " . $user_id);
         }
 
-
-        // Redirect to avoid resubmission
         header("Location: /admin-board");
         exit;
     } else {
@@ -83,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_user_id'])) {
     }
 }
 
-// Handle CREATE request
+// creare de useri
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'], $_POST['last_name'], $_POST['email'], $_POST['password'], $_POST['user_type'])) {
     $first_name = $conn->quote($_POST['first_name']);
     $last_name = $conn->quote($_POST['last_name']);
@@ -91,13 +85,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['first_name'], $_POST[
     $password = $_POST['password'];
     $user_type = $_POST['user_type'];
     $active=1;
-    // Validate email format
+    // validare mail
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         echo "Error: Invalid email format!";
         exit;
     }
 
-    // Validate user role
+    // validare rol user
     $allowedRoles = ["admin", "librarian", "reader"];
     if (!in_array($user_type, $allowedRoles)) {
         echo "Error: Invalid user role!";

@@ -5,36 +5,30 @@ $db = new Database($config);
 $conn = $db->getConnection();
 
 if (!isset($_SESSION['user_type']) || ($_SESSION['user_type'] !== 'librarian'&& $_SESSION['user_type'] !== 'admin')) {
-    // Redirect to a restricted page or login page
     header("Location: /restricted-access");
     exit;
 }
 
-// Fetch all books
+// scot toate cartile din bd
 $books = $db->query("SELECT * FROM books")->fetchAll();
 
-// Handle book deletion
+// stergerea cartilor
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_book_id'])) {
-    //$book_id = intval($_POST['delete_book_id']);
     $book_id = $_POST['delete_book_id'];
     echo $book_id;
-    // Delete the book with the given ID using positional placeholders
     $db->query("DELETE FROM books WHERE book_id =".$book_id);
 
-
-    // Redirect to avoid form resubmission
     header("Location: /librarian-board");
     exit;
 }
-// Handle book update
+
+// actualizarea cartilor
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_book_id'])) {
     $book_id = $_POST['update_book_id'];
 
-    // Fetch existing book data
     $bookExists = $db->query("SELECT * FROM books WHERE book_id =".$book_id)->fetch();
 
     if ($bookExists) {
-
         if (!empty($_POST['title'])) {
             $title = $conn->quote($_POST['title']);
             $db->query("UPDATE books SET title = " . $title . " WHERE book_id = " . $book_id);
@@ -49,7 +43,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_book_id'])) {
             $link = $conn->quote($_POST['link']);
             $db->query("UPDATE books SET link = " . $link . " WHERE book_id = " . $book_id);
         }
-// Redirect to avoid resubmission
         header("Location: /librarian-board");
         exit;
     } else {
@@ -57,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_book_id'])) {
     }
 }
 
-// Handle CREATE request
+// crearea cartilor
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['title'], $_POST['author'], $_POST['link'])) {
     $title = $conn->quote($_POST['title']);
     $author = $conn->quote($_POST['author']);

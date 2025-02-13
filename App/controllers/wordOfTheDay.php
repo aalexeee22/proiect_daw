@@ -1,20 +1,20 @@
 <?php
-// URL of the Word of the Day page
+// URL-ul paginii Word of the Day
 $url = "https://www.merriam-webster.com/word-of-the-day";
 
-// Fetch the HTML content
+// extrag HTML-ul
 $context = stream_context_create([
     "http" => ["user_agent" => "Mozilla/5.0"]
 ]);
 $html = file_get_contents($url, false, $context);
 
-// Load the HTML into DOMDocument
+// incarc HTML-ul in DOMDocument
 $dom = new DOMDocument();
-libxml_use_internal_errors(true); // Suppress warnings
+libxml_use_internal_errors(true);
 $dom->loadHTML($html);
 libxml_clear_errors();
 
-// Use XPath to extract the word of the day
+// extrag cuvantul zilei cu ajutorul XPath
 $xpath = new DOMXPath($dom);
 $wordNode = $xpath->query("//h2[@class='word-header-txt']");
 

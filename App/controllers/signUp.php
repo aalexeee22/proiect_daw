@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (isset($_SESSION['user_id'])) {
-    header("Location: /restricted-access"); // Redirect to home or change to /dashboard if needed
+    header("Location: /restricted-access");
     exit;
 }
 require_once basePath('config/db.php');
@@ -11,7 +11,6 @@ require_once basePath('PHPMailer-master/src/Exception.php');
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-//require_once basePath('controllers/mail_config.php');
 $usernameG='';
 $passwordG='';
 
@@ -24,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = trim($_POST['password']);
 
-    // Check if the email already exists
+    // verific daca exista deja mail-ul
     $emailQuery = "SELECT COUNT(*) FROM users WHERE email = :email";
     $emailStmt = $conn->prepare($emailQuery);
     $emailStmt->execute([':email' => $email]);
@@ -32,16 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($emailExists > 0) {
         $_SESSION['error'] = "This email is already in use. Please use a different email address.";
-        header("Location: /signUp"); // Redirect back to sign-up page
+        header("Location: /signUp");
         exit;
     }
 
-    // Generate activation code
+    // generez codul de activare
     $activation_code = bin2hex(random_bytes(16));
     $activation_expiry = date("Y-m-d H:i:s", strtotime("+1 day")); // 24-hour expiry
 
     try {
-        // Send activation email
+        // trimit mail de activare
         $domain='http://localhost';
         $activation_link = "$domain/activate";
         $message = "Hello $first_name, click the link below to activate your account by entering $activation_code at:\n$activation_link";
@@ -58,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = $usernameG; // Set in mail_config.php
-        $mail->Password = $passwordG; // Set in mail_config.php
+        $mail->Username = $usernameG;
+        $mail->Password = $passwordG;
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port = 465;
         $mail->setFrom($usernameG, 'Library');
@@ -72,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $_SESSION['success'] = "Registration successful! Check your email for activation.";
-        // Insert into database
+        // inserez noul user in baza de date dupa ce s-a trimis mail-ul de confirmare cu succes ca sa nu incarc baza de date
         $query = "INSERT INTO users (first_name, last_name, email, password, user_type, active, activation_code, activation_expiry) 
                   VALUES (:first_name, :last_name, :email, :password, 'reader', 0, :activation_code, :activation_expiry)";
         $stmt = $conn->prepare($query);

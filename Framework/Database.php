@@ -7,7 +7,7 @@ class Database {
     }
 
     /**
-     * Constructor for the Database
+     * constructor pentru baza de date
      */
     public function __construct($config) {
         $dsn="mysql:host={$config['host']};port={$config['port']};dbname={$config['dbname']}";

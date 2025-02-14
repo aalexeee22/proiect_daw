@@ -185,3 +185,125 @@ header .buttons a:hover {
     text-decoration: underline;
 }
 
+#create-user-form, #create-book-form {
+    /*display: none;*/
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: left;
+}
+
+#create-user-form label,#create-book-form label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+}
+#create-user-form input, #create-book-form input{
+    width: 80%;
+}
+#create-user-form input, #create-book-form input,
+#create-user-form select, #create-book-form select{
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-left:15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+#create-user-form select, #create-book-form select {
+    background: #fff;
+    cursor: pointer;
+    width: 87%;
+}
+
+#create-user-form button, #create-book-form button {
+    display: block;
+    width: 40%;  /* Adjust width as needed */
+    margin: 10px auto; /* Centers horizontally */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.title_form{
+    text-align: center;
+    font-size: 20px;
+
+}
+
+#create-user-form button:hover, #create-book-form button:hover {
+    background-color: #555;
+}
+
+.update-form {
+    /*display: none;*/
+    width: 300px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: left;
+}
+
+.update-form label {
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 5px;
+    color: #333;
+}
+.update-form input{
+    width: 80%;
+}
+.update-form input,
+.update-form select {
+    padding: 10px;
+    margin-bottom: 15px;
+    margin-left:15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.update-form {
+    background: #fff;
+    cursor: pointer;
+    width: 87%;
+}
+.update-form select {
+    background: #fff;
+    cursor: pointer;
+    width: 88%;
+}
+
+.update-form button {
+    display: block;
+    width: 80%;  /* Adjust width as needed */
+    margin: 10px auto; /* Centers horizontally */
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #333;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.title_form{
+    text-align: center;
+    font-size: 20px;
+
+}
+
+.update-form button:hover {
+    background-color: #555;
+}

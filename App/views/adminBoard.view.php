@@ -17,24 +17,17 @@ loadPartial('navbar');
     <button onclick="toggleCreateUserForm()" class="add-button">Add New User</button>
 
     <!-- formular de creare useri (default hidden) -->
-    <form method="POST" id="create-user-form" style="display: none;">
-        <label>First Name:</label>
-        <input type="text" name="first_name" placeholder="Enter first name" required>
+    <form method="POST" id="create-user-form" style="display: none;" >
+        <p class="title_form">New user</p>
         <br/>
-
-        <label>Last Name:</label>
-        <input type="text" name="last_name" placeholder="Enter last name" required>
+        <input type="text" name="first_name" placeholder="First name" required>
         <br/>
-
-        <label>Email:</label>
-        <input type="email" name="email" id="create_email" placeholder="Enter email" required>
+        <input type="text" name="last_name" placeholder="Last name" required>
         <br/>
-
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="Enter password" required>
+        <input type="email" name="email" id="create_email" placeholder="Email" required>
         <br/>
-
-        <label>User Rights:</label>
+        <input type="password" name="password" placeholder="Password" required>
+        <br/>
         <select name="user_type" id="create_user_type" required>
             <option value="">Select User Role</option>
             <option value="admin">admin</option>
@@ -62,23 +55,18 @@ loadPartial('navbar');
                 <button type="submit" class="delete-button">Delete</button>
             </form>
 
-            <form method="POST" class="update-form" id="update-form-<?php echo $user['user_id']; ?>" style="display: none;">
+            <form method="POST" class="update-form" id="update-form-<?php echo $user['user_id']; ?>" style="display: none;" >
                 <input type="hidden" name="update_user_id" value="<?php echo $user['user_id']; ?>">
-                <label>First Name:</label>
-                <input type="text" name="first_name" placeholder="Enter new first name">
+                <input type="text" name="first_name" placeholder="New first name">
                 <br/>
-                <label>Last Name:</label>
-                <input type="text" name="last_name" placeholder="Enter new last name">
+                <input type="text" name="last_name" placeholder="New last name">
                 <br/>
-                <label>Email:</label>
-                <input type="email" name="email" id="email_<?php echo $user['user_id']; ?>" placeholder="Enter new email">
+                <input type="email" name="email" id="email_<?php echo $user['user_id']; ?>" placeholder="New email">
                 <br/>
-                <label>Password:</label>
-                <input type="password" name="password" placeholder="Enter new password">
+                <input type="password" name="password" placeholder="New password">
                 <br/>
-                <label>User Rights:</label>
                 <select name="user_type" id="user_type_<?php echo $user['user_id']; ?>">
-                    <option value="">Select User Role</option>
+                    <option value="">Select new user role</option>
                     <option value="admin">admin</option>
                     <option value="librarian">librarian</option>
                     <option value="reader">reader</option>

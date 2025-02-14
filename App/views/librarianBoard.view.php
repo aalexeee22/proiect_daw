@@ -17,16 +17,15 @@ loadPartial('navbar');
 
         <!-- formular de adaugare carti (default hidden) -->
         <form method="POST" id="create-book-form" style="display: none;">
-            <label>Title:</label>
-            <input type="text" name="title" placeholder="Enter title" required>
+            <p class="title_form">New book</p>
+            <br/>
+            <input type="text" name="title" placeholder="Title" required>
             <br/>
 
-            <label>Author:</label>
-            <input type="text" name="author" placeholder="Enter author" required>
+            <input type="text" name="author" placeholder="Author" required>
             <br/>
 
-            <label>Link:</label>
-            <input type="text" name="link" placeholder="Enter link" required>
+            <input type="text" name="link" placeholder="Link" required>
             <br/>
 
 

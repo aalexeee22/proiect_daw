@@ -1,5 +1,5 @@
 <?php
-//datele de configurare pentru baza de date
+//fisierele de configurare pentru baza de date
 return [
     'host' => 'localhost',
     'port' => 3306,
